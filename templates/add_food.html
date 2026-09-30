@@ -1,0 +1,177 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Add Food | FoodBridge</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/donor.css') }}">
+</head>
+
+<body>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="logo">Food<span>Bridge</span></div>
+        <p class="menu-title">Donor Menu</p>
+
+        <a href="{{ url_for('donor_dashboard') }}" class="nav-link">
+            <span class="icon">⌂</span>
+            <span class="nav-text">Dashboard</span>
+        </a>
+
+        <a href="{{ url_for('add_food') }}" class="nav-link active">
+            <span class="icon">＋</span>
+            <span class="nav-text">Add Food</span>
+        </a>
+
+        <a href="{{ url_for('incoming_requests') }}" class="nav-link">
+            <span class="icon">📩</span>
+            <span class="nav-text">NGO Requests</span>
+        </a>
+
+        <a href="{{ url_for('donation_history') }}" class="nav-link">
+            <span class="icon">📦</span>
+            <span class="nav-text">Donation History</span>
+        </a>
+
+        <a href="{{ url_for('donor_profile') }}" class="nav-link">
+            <span class="icon">👤</span>
+            <span class="nav-text">My Profile</span>
+        </a>
+
+        <div class="sidebar-bottom">
+            <a href="{{ url_for('logout') }}" class="nav-link">
+                <span class="icon">↪</span>
+                <span class="nav-text">Logout</span>
+            </a>
+        </div>
+
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+
+        <div class="topbar">
+            <div>
+                <h1>Add Surplus Food</h1>
+                <p>Share surplus food with NGOs and people in need.</p>
+            </div>
+
+            <div class="user">
+                <div class="avatar">
+                    {{ session.get('name', 'D')[0]|upper }}
+                </div>
+
+                <div class="user-info">
+                    <strong>{{ session.get('name', 'Donor') }}</strong>
+                    <small>Food Donor</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- FLASH MESSAGES -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-container">
+                    {% for category, message in messages %}
+                        <div class="flash-message {{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- FOOD FORM -->
+        <div class="section">
+
+            <div class="section-header">
+                <h2>Food Details</h2>
+            </div>
+
+            <form method="POST"
+                  action="{{ url_for('add_food') }}">
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label for="food_name">Food Name</label>
+                        <input
+                            type="text"
+                            id="food_name"
+                            name="food_name"
+                            placeholder="Enter food name"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="quantity">Quantity</label>
+                        <input
+                            type="text"
+                            id="quantity"
+                            name="quantity"
+                            placeholder="e.g. 10 kg or 20 plates"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="food_type">Food Type</label>
+                        <select id="food_type"
+                                name="food_type"
+                                required>
+                            <option value="">Select food type</option>
+                            <option value="Veg">Veg</option>
+                            <option value="Non-Veg">Non-Veg</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="expiry_date">Expiry Date</label>
+                        <input
+                            type="date"
+                            id="expiry_date"
+                            name="expiry_date"
+                            min="{{ today }}"
+                            required>
+                    </div>
+
+                    <div class="form-group full">
+                        <label for="address">Pickup Location / Address</label>
+                        <textarea
+                            id="address"
+                            name="address"
+                            placeholder="Enter the complete food pickup address"
+                            required></textarea>
+                    </div>
+
+                </div>
+
+                <div style="margin-top:25px;display:flex;gap:12px;flex-wrap:wrap;">
+
+                    <button type="submit" class="btn">
+                        Add Food
+                    </button>
+
+                    <a href="{{ url_for('donor_dashboard') }}"
+                       class="btn btn-outline">
+                        Cancel
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </main>
+</div>
+
+</body>
+</html>

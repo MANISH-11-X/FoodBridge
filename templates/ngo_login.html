@@ -1,0 +1,114 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NGO Login | FoodBridge</title>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f0fdf4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            width: 100%;
+            max-width: 420px;
+            padding: 35px;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px #00000012;
+        }
+
+        h1 { color: #166534; text-align: center; }
+        p { text-align: center; color: #64748b; }
+
+        label {
+            display: block;
+            margin: 18px 0 6px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 25px;
+            background: #15803d;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover { background: #166534; }
+
+        .message {
+            background: #dcfce7;
+            color: #166534;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+
+        a { color: #15803d; text-decoration: none; }
+        .bottom { margin-top: 20px; }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <h1>NGO Login</h1>
+    <p>Welcome back to FoodBridge.</p>
+
+    {% with messages = get_flashed_messages() %}
+        {% for message in messages %}
+            <div class="message">{{ message }}</div>
+        {% endfor %}
+    {% endwith %}
+
+    <form action="{{ url_for('ngo_login') }}" method="POST">
+
+        <label>Email Address</label>
+        <input type="email" name="email"
+               placeholder="Enter registered email" required>
+
+        <label>Password</label>
+        <input type="password" name="password"
+               placeholder="Enter password" required>
+
+        <button type="submit">Login</button>
+    </form>
+
+    <p class="bottom">
+        Don't have an account?
+        <a href="{{ url_for('ngo_register') }}">Register NGO</a>
+    </p>
+
+    <p>
+        <a href="{{ url_for('donorloginroute') }}">
+            Login as Donor
+        </a>
+    </p>
+
+</div>
+</body>
+</html>

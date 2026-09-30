@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NGO Dashboard | FoodBridge</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f4fbf6;
+            color: #1f2937;
+        }
+
+        /* ================= SIDEBAR ================= */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 245px;
+            height: 100vh;
+
+            background: #ffffff;
+
+            border-right: 1px solid #e5e7eb;
+
+            padding: 28px 18px;
+
+            display: flex;
+            flex-direction: column;
+
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 700;
+
+            color: #166534;
+
+            padding: 0 15px;
+
+            margin-bottom: 45px;
+        }
+
+        .logo span {
+            color: #22c55e;
+        }
+
+        .menu-title {
+            font-size: 11px;
+            font-weight: 600;
+
+            color: #94a3b8;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+
+            padding: 0 15px;
+
+            margin-bottom: 12px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+
+            gap: 13px;
+
+            text-decoration: none;
+
+            color: #64748b;
+
+            padding: 13px 15px;
+
+            border-radius: 10px;
+
+            margin-bottom: 7px;
+
+            font-size: 14px;
+
+            font-weight: 500;
+
+            transition: 0.2s;
+        }
+
+        .nav-link:hover {
+            background: #f0fdf4;
+            color: #15803d;
+        }
+
+        .nav-link.active {
+            background: #dcfce7;
+            color: #15803d;
+
+            font-weight: 600;
+        }
+
+        .nav-icon {
+            width: 22px;
+
+            text-align: center;
+
+            font-size: 18px;
+        }
+
+        .sidebar-bottom {
+            margin-top: auto;
+        }
+
+        .logout {
+            color: #dc2626;
+        }
+
+        .logout:hover {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+
+        /* ================= MAIN ================= */
+
+        .main {
+            margin-left: 245px;
+
+            padding: 35px 45px;
+
+            min-height: 100vh;
+        }
+
+
+        /* ================= TOP BAR ================= */
+
+        .topbar {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 35px;
+        }
+
+        .welcome h1 {
+            font-size: 28px;
+
+            color: #14532d;
+
+            margin-bottom: 5px;
+        }
+
+        .welcome p {
+            color: #64748b;
+
+            font-size: 14px;
+        }
+
+        .profile {
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            background: white;
+
+            padding: 9px 15px 9px 9px;
+
+            border-radius: 12px;
+
+            border: 1px solid #e5e7eb;
+        }
+
+        .avatar {
+            width: 42px;
+            height: 42px;
+
+            border-radius: 50%;
+
+            background: #dcfce7;
+
+            color: #15803d;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            font-weight: 700;
+
+            font-size: 17px;
+        }
+
+        .profile-info strong {
+            display: block;
+
+            font-size: 13px;
+
+            color: #1f2937;
+        }
+
+        .profile-info span {
+            font-size: 11px;
+
+            color: #94a3b8;
+        }
+
+
+        /* ================= QUICK ACTIONS ================= */
+
+        .actions {
+            display: flex;
+
+            gap: 12px;
+
+            margin-bottom: 30px;
+
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            padding: 11px 18px;
+
+            border-radius: 9px;
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            transition: 0.2s;
+        }
+
+        .primary-btn {
+            background: #15803d;
+
+            color: white;
+
+            box-shadow: 0 4px 12px rgba(21, 128, 61, 0.18);
+        }
+
+        .primary-btn:hover {
+            background: #166534;
+
+            transform: translateY(-1px);
+        }
+
+        .secondary-btn {
+            background: white;
+
+            color: #15803d;
+
+            border: 1px solid #bbf7d0;
+        }
+
+        .secondary-btn:hover {
+            background: #f0fdf4;
+        }
+
+
+        /* ================= STAT CARDS ================= */
+
+        .section-title {
+            font-size: 16px;
+
+            color: #1f2937;
+
+            margin-bottom: 15px;
+
+            font-weight: 600;
+        }
+
+        .cards {
+            display: grid;
+
+            grid-template-columns: repeat(4, 1fr);
+
+            gap: 20px;
+
+            margin-bottom: 35px;
+        }
+
+        .card {
+            background: white;
+
+            border: 1px solid #e5e7eb;
+
+            border-radius: 15px;
+
+            padding: 22px;
+
+            position: relative;
+
+            overflow: hidden;
+
+            transition: 0.25s;
+
+            box-shadow: 0 4px 15px rgba(15, 23, 42, 0.04);
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+
+            box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08);
+        }
+
+        .card::after {
+            content: "";
+
+            position: absolute;
+
+            width: 65px;
+            height: 65px;
+
+            border-radius: 50%;
+
+            background: #f0fdf4;
+
+            right: -20px;
+            bottom: -20px;
+        }
+
+        .card-top {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 18px;
+        }
+
+        .card-icon {
+            width: 43px;
+            height: 43px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 11px;
+
+            background: #dcfce7;
+
+            font-size: 20px;
+        }
+
+        .card-label {
+            font-size: 13px;
+
+            color: #64748b;
+
+            font-weight: 500;
+        }
+
+        .card h2 {
+            font-size: 30px;
+
+            color: #15803d;
+
+            line-height: 1;
+        }
+
+
+        /* Different card icons */
+
+        .pending .card-icon {
+            background: #fef3c7;
+        }
+
+        .pending h2 {
+            color: #d97706;
+        }
+
+        .accepted .card-icon {
+            background: #dbeafe;
+        }
+
+        .accepted h2 {
+            color: #2563eb;
+        }
+
+        .completed .card-icon {
+            background: #dcfce7;
+        }
+
+        .completed h2 {
+            color: #15803d;
+        }
+
+
+        /* ================= INFO PANEL ================= */
+
+        .info-grid {
+            display: grid;
+
+            grid-template-columns: 2fr 1fr;
+
+            gap: 20px;
+        }
+
+        .info-card {
+            background: white;
+
+            border: 1px solid #e5e7eb;
+
+            border-radius: 15px;
+
+            padding: 25px;
+
+            box-shadow: 0 4px 15px rgba(15, 23, 42, 0.04);
+        }
+
+        .info-card h3 {
+            font-size: 16px;
+
+            color: #1f2937;
+
+            margin-bottom: 8px;
+        }
+
+        .info-card p {
+            color: #64748b;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+        }
+
+        .impact-box {
+            margin-top: 20px;
+
+            background: #f0fdf4;
+
+            border: 1px solid #bbf7d0;
+
+            border-radius: 11px;
+
+            padding: 16px;
+        }
+
+        .impact-box strong {
+            display: block;
+
+            color: #166534;
+
+            font-size: 14px;
+
+            margin-bottom: 5px;
+        }
+
+        .impact-box span {
+            color: #64748b;
+
+            font-size: 12px;
+        }
+
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 1100px) {
+
+            .cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 750px) {
+
+            .sidebar {
+                position: relative;
+
+                width: 100%;
+
+                height: auto;
+
+                border-right: none;
+
+                border-bottom: 1px solid #e5e7eb;
+            }
+
+            .sidebar-bottom {
+                margin-top: 15px;
+            }
+
+            .main {
+                margin-left: 0;
+
+                padding: 25px 20px;
+            }
+
+            .topbar {
+                align-items: flex-start;
+
+                gap: 20px;
+
+                flex-direction: column;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+
+<!-- ================= SIDEBAR ================= -->
+
+<aside class="sidebar">
+
+    <div class="logo">
+        Food<span>Bridge</span>
+    </div>
+
+    <p class="menu-title">
+        NGO Menu
+    </p>
+
+    <a href="{{ url_for('ngo_dashboard') }}"
+       class="nav-link active">
+
+        <span class="nav-icon">⌂</span>
+
+        Dashboard
+
+    </a>
+
+    <a href="{{ url_for('ngo_food') }}"
+       class="nav-link">
+
+        <span class="nav-icon">🍱</span>
+
+        Browse Food
+
+    </a>
+
+    <a href="{{ url_for('ngo_my_requests') }}"
+       class="nav-link">
+
+        <span class="nav-icon">📋</span>
+
+        My Requests
+
+    </a>
+
+
+    <div class="sidebar-bottom">
+
+        <a href="{{ url_for('ngo_logout') }}"
+           class="nav-link logout">
+
+            <span class="nav-icon">↪</span>
+
+            Logout
+
+        </a>
+
+    </div>
+
+</aside>
+
+
+
+<!-- ================= MAIN CONTENT ================= -->
+
+<main class="main">
+
+
+    <!-- TOP BAR -->
+
+    <div class="topbar">
+
+        <div class="welcome">
+
+            <h1>
+                Welcome, {{ ngo_name }}
+            </h1>
+
+            <p>
+                Manage your food requests and help reduce food waste.
+            </p>
+
+        </div>
+
+
+        <div class="profile">
+
+            <div class="avatar">
+                {{ ngo_name[0]|upper }}
+            </div>
+
+            <div class="profile-info">
+
+                <strong>
+                    {{ ngo_name }}
+                </strong>
+
+                <span>
+                    NGO Account
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- QUICK ACTIONS -->
+
+    <div class="actions">
+
+        <a href="{{ url_for('ngo_food') }}"
+           class="action-btn primary-btn">
+
+            🍱 Browse Available Food
+
+        </a>
+
+        <a href="{{ url_for('ngo_my_requests') }}"
+           class="action-btn secondary-btn">
+
+            📋 View My Requests
+
+        </a>
+
+    </div>
+
+
+
+    <!-- STATISTICS -->
+
+    <h3 class="section-title">
+        Request Overview
+    </h3>
+
+
+    <div class="cards">
+
+
+        <!-- TOTAL -->
+
+        <div class="card">
+
+            <div class="card-top">
+
+                <div class="card-icon">
+                    📦
+                </div>
+
+                <span class="card-label">
+                    Total Requests
+                </span>
+
+            </div>
+
+            <h2>
+                {{ total_requests }}
+            </h2>
+
+        </div>
+
+
+
+        <!-- PENDING -->
+
+        <div class="card pending">
+
+            <div class="card-top">
+
+                <div class="card-icon">
+                    ⏳
+                </div>
+
+                <span class="card-label">
+                    Pending Requests
+                </span>
+
+            </div>
+
+            <h2>
+                {{ pending_requests }}
+            </h2>
+
+        </div>
+
+
+
+        <!-- ACCEPTED -->
+
+        <div class="card accepted">
+
+            <div class="card-top">
+
+                <div class="card-icon">
+                    ✓
+                </div>
+
+                <span class="card-label">
+                    Accepted Requests
+                </span>
+
+            </div>
+
+            <h2>
+                {{ accepted_requests }}
+            </h2>
+
+        </div>
+
+
+
+        <!-- COMPLETED -->
+
+        <div class="card completed">
+
+            <div class="card-top">
+
+                <div class="card-icon">
+                    ❤️
+                </div>
+
+                <span class="card-label">
+                    Completed Donations
+                </span>
+
+            </div>
+
+            <h2>
+                {{ completed_requests }}
+            </h2>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- INFORMATION -->
+
+    <div class="info-grid">
+
+
+        <div class="info-card">
+
+            <h3>
+                🍱 Find Available Food
+            </h3>
+
+            <p>
+                Browse food donations available from nearby donors
+                and submit requests based on your organization's needs.
+            </p>
+
+            <div class="impact-box">
+
+                <strong>
+                    Every donation helps reduce food waste.
+                </strong>
+
+                <span>
+                    Connect with donors and help distribute surplus
+                    food to people who need it.
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="info-card">
+
+            <h3>
+                📋 Track Your Requests
+            </h3>
+
+            <p>
+                Keep track of your food requests and monitor their
+                current status from one place.
+            </p>
+
+            <div class="impact-box">
+
+                <strong>
+                    Stay updated
+                </strong>
+
+                <span>
+                    Check pending, accepted and completed requests.
+                </span>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+</main>
+
+</body>
+</html>

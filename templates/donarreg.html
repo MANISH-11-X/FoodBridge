@@ -1,0 +1,60 @@
+<head>
+    <title>Donor Registration | FoodBridge</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/donor.css') }}">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
+</head>
+
+<body class="auth-page">
+
+    <div class="auth-container">
+
+        <h2>Donor Registration</h2>
+        <p class="auth-subtitle">
+            Join FoodBridge and help reduce food waste
+        </p>
+
+        <form action="{{ url_for('donarreg') }}" method="POST">
+
+            <label>Full Name</label>
+            <input type="text" name="name"
+                   placeholder="Enter your full name" required>
+
+            <label>Email Address</label>
+            <input type="email" name="email"
+                   placeholder="Enter your email" required>
+
+            <label>Password</label>
+            <input type="password" name="password"
+                   placeholder="Create a password" required>
+
+            <label>Donor Type</label>
+            <select name="donartype" required>
+                <option value="">Select donor type</option>
+                <option value="Individual">Individual</option>
+                <option value="Restaurant">Restaurant</option>
+                <option value="Hotel">Hotel</option>
+                <option value="Organization">Organization</option>
+            </select>
+
+            <label>Address</label>
+            <input type="text" name="address"
+                   placeholder="Enter your address" required>
+
+            <button type="submit">Register</button>
+
+        </form>
+
+        <div class="auth-footer">
+            Already have an account?
+            <a href="{{ url_for('donorloginroute') }}">
+                Login here
+            </a>
+        </div>
+
+    </div>
+
+</body>

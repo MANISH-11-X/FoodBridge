@@ -1,0 +1,171 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incoming Requests | FoodBridge</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/donor.css') }}">
+</head>
+<body>
+
+<div class="layout">
+
+    <aside class="sidebar">
+        <div class="logo">Food<span>Bridge</span></div>
+        <p class="menu-title">Donor Menu</p>
+
+        <a href="{{ url_for('donor_dashboard') }}" class="nav-link">
+            <span class="icon">⌂</span><span class="nav-text">Dashboard</span>
+        </a>
+
+        <a href="{{ url_for('add_food') }}" class="nav-link">
+            <span class="icon">＋</span><span class="nav-text">Add Food</span>
+        </a>
+
+        <a href="{{ url_for('incoming_requests') }}" class="nav-link active">
+            <span class="icon">📩</span><span class="nav-text">NGO Requests</span>
+        </a>
+
+        <a href="{{ url_for('donation_history') }}" class="nav-link">
+            <span class="icon">📦</span><span class="nav-text">Donation History</span>
+        </a>
+
+        <a href="{{ url_for('donor_profile') }}" class="nav-link">
+            <span class="icon">👤</span><span class="nav-text">My Profile</span>
+        </a>
+
+        <div class="sidebar-bottom">
+            <a href="{{ url_for('logout') }}" class="nav-link">
+                <span class="icon">↪</span><span class="nav-text">Logout</span>
+            </a>
+        </div>
+    </aside>
+
+    <main class="main">
+
+        <div class="topbar">
+            <div>
+                <h1>Incoming NGO Requests</h1>
+                <p>Manage food pickup requests from NGOs.</p>
+            </div>
+
+            <div class="user">
+                <div class="avatar">D</div>
+                <div class="user-info">
+                    <strong>{{ session.get('name', 'Donor') }}</strong>
+                    <small>Food Donor</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats">
+
+            <div class="card">
+                <div class="stat-icon">📩</div>
+                <p class="stat-label">Total Requests</p>
+                <div class="stat-value">{{ requests|length }}</div>
+            </div>
+
+            <div class="card">
+                <div class="stat-icon">⏳</div>
+                <p class="stat-label">Pending</p>
+                <div class="stat-value">{{ requests|selectattr('status', 'equalto', 'Pending')|list|length }}</div>
+            </div>
+
+            <div class="card">
+                <div class="stat-icon">✓</div>
+                <p class="stat-label">Accepted</p>
+                <div class="stat-value">{{ requests|selectattr('status', 'equalto', 'Accepted')|list|length }}</div>
+            </div>
+
+            <div class="card">
+                <div class="stat-icon">🤝</div>
+                <p class="stat-label">Completed</p>
+                <div class="stat-value">{{ requests|selectattr('status', 'equalto', 'Completed')|list|length }}</div>
+            </div>
+
+        </div>
+
+        <div class="section">
+
+            <div class="section-header">
+                <h2>All Pickup Requests</h2>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>NGO Name</th>
+                            <th>Food Name</th>
+                            <th>Quantity</th>
+                            <th>Pickup Date</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for req in requests %}
+                        <tr>
+                            <td><strong>{{ req.ngo_name }}</strong></td>
+                            <td>{{ req.food_name }}</td>
+                            <td>{{ req.quantity }}</td>
+                            <td>{{ req.pickup_date|default('Not specified') }}</td>
+                            <td>
+                                <span class="badge
+                                {% if req.status == 'Accepted' %}accepted
+                                {% elif req.status == 'Completed' %}completed
+                                {% elif req.status == 'Rejected' %}rejected
+                                {% else %}pending{% endif %}">
+                                    {{ req.status }}
+                                </span>
+                            </td>
+
+                            <td>
+                                {% if req.status == 'Pending' %}
+                                <div class="actions">
+                                    <form method="POST"
+                                          action="{{ url_for('update_request', request_id=req._id) }}"
+                                          onsubmit="return confirm('Accept this pickup request?')">
+                                        <input type="hidden" name="status" value="Accepted">
+                                        <button class="btn btn-small" type="submit">Accept</button>
+                                    </form>
+
+                                    <form method="POST"
+                                          action="{{ url_for('update_request', request_id=req._id) }}"
+                                          onsubmit="return confirm('Reject this pickup request?')">
+                                        <input type="hidden" name="status" value="Rejected">
+                                        <button class="btn btn-danger btn-small" type="submit">Reject</button>
+                                    </form>
+                                </div>
+                                {% elif req.status == 'Accepted' %}
+                                    <span style="color:#1769aa;font-size:11px;">Awaiting pickup</span>
+                                {% else %}
+                                    <span style="color:#718075;font-size:11px;">No action</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="6" style="text-align:center;padding:35px;">
+                                <div style="font-size:30px;">📭</div>
+                                <strong>No requests yet</strong>
+                                <p style="color:#718075;margin-top:8px;">
+                                    NGO pickup requests will appear here when someone requests your food.
+                                </p>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </main>
+</div>
+
+</body>
+</html>

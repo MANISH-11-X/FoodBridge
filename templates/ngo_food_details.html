@@ -1,0 +1,177 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Details | FoodBridge</title>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f0fdf4;
+        }
+
+        nav {
+            background: #166534;
+            color: white;
+            padding: 18px 5%;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 35px auto;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px #0000000c;
+        }
+
+        h1 { color: #166534; }
+
+        .detail {
+            padding: 12px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        label {
+            display: block;
+            margin: 18px 0 8px;
+            font-weight: bold;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        button, .btn {
+            display: inline-block;
+            background: #15803d;
+            color: white;
+            border: none;
+            padding: 14px 22px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            margin-top: 20px;
+            font-size: 15px;
+        }
+
+        button:hover { background: #166534; }
+
+        .message {
+            background: #dcfce7;
+            color: #166534;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .back { background: #475569; }
+    </style>
+</head>
+
+<body>
+
+<nav>
+    <a href="{{ url_for('ngo_dashboard') }}">
+        <strong>FoodBridge</strong> | NGO Dashboard
+    </a>
+</nav>
+
+<div class="container">
+
+    <div class="card">
+
+        {% with messages = get_flashed_messages() %}
+            {% for message in messages %}
+                <div class="message">{{ message }}</div>
+            {% endfor %}
+        {% endwith %}
+
+        <h1>{{ food.get('food_name', 'Food Details') }}</h1>
+
+        <div class="detail">
+            <strong>Category:</strong>
+            {{ food.get('food_type', 'Other') }}
+        </div>
+
+        <div class="detail">
+            <strong>Available Quantity:</strong>
+            {{ food.get('quantity', 0) }}
+        </div>
+
+        <div class="detail">
+            <strong>Expiry Date:</strong>
+            {{ food.get('expiry_date', 'Not specified') }}
+        </div>
+
+        <div class="detail">
+            <strong>Pickup Address:</strong>
+            {{ food.get('address', 'Contact donor for location') }}
+        </div>
+
+        <div class="detail">
+            <strong>Description:</strong>
+            {{ food.get('description', 'No description provided') }}
+        </div>
+
+        <h2>Request This Food</h2>
+
+<form action="{{ url_for('ngo_request_food', food_id=food['_id']) }}"
+      method="POST">
+
+            <label>Quantity Required</label>
+
+<label for="quantity">Quantity Required</label>
+
+<input
+    type="text"
+    id="quantity"
+    name="quantity"
+    placeholder="e.g. 5 kg, 10 plates, 2 boxes"
+    required
+>
+
+            <label>Message to Donor</label>
+
+            <textarea
+                name="message"
+                placeholder="Explain your NGO's requirement or pickup details"
+            ></textarea>
+
+            <button type="submit">Send Food Request</button>
+
+        </form>
+
+        <a class="btn back" href="{{ url_for('ngo_food') }}">
+            Back to Available Food
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+</html>

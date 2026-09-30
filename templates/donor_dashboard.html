@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Donor Dashboard | FoodBridge</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/donor.css') }}">
+
+    <style>
+
+        /* =========================
+           AI FOOD SAFETY BUTTON
+           ========================= */
+
+        .ai-button {
+            background: #218838;
+            color: white;
+            border: none;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: 0.3s ease;
+        }
+
+        .ai-button:hover {
+            background: #17692b;
+            transform: translateY(-2px);
+        }
+
+        .ai-button:active {
+            transform: scale(0.97);
+        }
+
+        .ai-form {
+            margin: 0;
+        }
+
+
+        /* =========================
+           TABLE LAYOUT
+           ========================= */
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 15px;
+            text-align: left;
+            vertical-align: middle;
+        }
+
+
+        /* =========================
+           ML PICKUP PRIORITY
+           ========================= */
+
+        .priority {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .priority-high {
+            background: #fee2e2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+
+        .priority-medium {
+            background: #fef3c7;
+            color: #b45309;
+            border: 1px solid #fde68a;
+        }
+
+        .priority-low {
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+        .priority-confidence {
+            display: block;
+            font-size: 11px;
+            font-weight: 500;
+            margin-top: 5px;
+            color: #64748b;
+            white-space: nowrap;
+        }
+
+
+        /* =========================
+           MOBILE RESPONSIVENESS
+           ========================= */
+
+        @media (max-width: 768px) {
+
+            .ai-button {
+                font-size: 12px;
+                padding: 9px 12px;
+            }
+
+            th,
+            td {
+                padding: 12px;
+            }
+
+            .priority {
+                font-size: 11px;
+                padding: 5px 8px;
+            }
+
+            .priority-confidence {
+                font-size: 10px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="layout">
+
+
+    <!-- =========================
+         SIDEBAR
+         ========================= -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            Food<span>Bridge</span>
+        </div>
+
+        <p class="menu-title">
+            Donor Menu
+        </p>
+
+
+        <a href="{{ url_for('donor_dashboard') }}"
+           class="nav-link active">
+
+            <span class="icon">⌂</span>
+            <span class="nav-text">Dashboard</span>
+
+        </a>
+
+
+        <a href="{{ url_for('add_food') }}"
+           class="nav-link">
+
+            <span class="icon">＋</span>
+            <span class="nav-text">Add Food</span>
+
+        </a>
+
+
+        <a href="{{ url_for('incoming_requests') }}"
+           class="nav-link">
+
+            <span class="icon">📩</span>
+            <span class="nav-text">NGO Requests</span>
+
+        </a>
+
+
+        <a href="{{ url_for('donation_history') }}"
+           class="nav-link">
+
+            <span class="icon">📦</span>
+            <span class="nav-text">Donation History</span>
+
+        </a>
+
+
+        <a href="{{ url_for('donor_profile') }}"
+           class="nav-link">
+
+            <span class="icon">👤</span>
+            <span class="nav-text">My Profile</span>
+
+        </a>
+
+
+        <div class="sidebar-bottom">
+
+            <a href="{{ url_for('logout') }}"
+               class="nav-link">
+
+                <span class="icon">↪</span>
+                <span class="nav-text">Logout</span>
+
+            </a>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =========================
+         MAIN CONTENT
+         ========================= -->
+
+    <main class="main">
+
+
+        <!-- TOP BAR -->
+
+        <div class="topbar">
+
+            <div>
+
+                <h1>
+                    Donor Dashboard
+                </h1>
+
+                <p>
+                    Welcome back,
+                    {{ session.get('name', 'Donor') }}!
+                    Here's your donation overview.
+                </p>
+
+            </div>
+
+
+            <div class="user">
+
+                <div class="avatar">
+                    {{ session.get('name', 'D')[0]|upper }}
+                </div>
+
+                <div class="user-info">
+
+                    <strong>
+                        {{ session.get('name', 'Donor') }}
+                    </strong>
+
+                    <small>
+                        Food Donor
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =========================
+             FLASH MESSAGES
+             ========================= -->
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                <div class="flash-container">
+
+                    {% for category, message in messages %}
+
+                        <div class="flash-message {{ category }}">
+                            {{ message }}
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% endif %}
+
+        {% endwith %}
+
+
+
+        <!-- =========================
+             ADD FOOD BUTTON
+             ========================= -->
+
+        <div style="margin-bottom:25px;">
+
+            <a href="{{ url_for('add_food') }}"
+               class="btn">
+
+                ＋ Add New Food
+
+            </a>
+
+        </div>
+
+
+
+        <!-- =========================
+             STATISTICS
+             ========================= -->
+
+        <div class="stats">
+
+
+            <!-- TOTAL LISTINGS -->
+
+            <div class="card">
+
+                <div class="stat-icon">
+                    🍱
+                </div>
+
+                <p class="stat-label">
+                    Total Food Listings
+                </p>
+
+                <div class="stat-value">
+                    {{ total_listings }}
+                </div>
+
+                <p class="stat-note">
+                    All your food donations
+                </p>
+
+            </div>
+
+
+
+            <!-- AVAILABLE FOOD -->
+
+            <div class="card">
+
+                <div class="stat-icon">
+                    ⏳
+                </div>
+
+                <p class="stat-label">
+                    Available Food
+                </p>
+
+                <div class="stat-value">
+                    {{ available_food }}
+                </div>
+
+                <p class="stat-note">
+                    Waiting for NGO requests
+                </p>
+
+            </div>
+
+
+
+            <!-- PENDING REQUESTS -->
+
+            <div class="card">
+
+                <div class="stat-icon">
+                    📩
+                </div>
+
+                <p class="stat-label">
+                    Pending Requests
+                </p>
+
+                <div class="stat-value">
+                    {{ pending_requests }}
+                </div>
+
+                <p class="stat-note">
+                    Requests to review
+                </p>
+
+            </div>
+
+
+
+            <!-- COMPLETED DONATIONS -->
+
+            <div class="card">
+
+                <div class="stat-icon">
+                    🤝
+                </div>
+
+                <p class="stat-label">
+                    Completed Donations
+                </p>
+
+                <div class="stat-value">
+                    {{ completed_donations }}
+                </div>
+
+                <p class="stat-note">
+                    Successful handovers
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =========================
+             RECENT FOOD LISTINGS
+             ========================= -->
+
+        <div class="section">
+
+            <div class="section-header">
+
+                <h2>
+                    Recent Food Listings
+                </h2>
+
+                <a href="{{ url_for('add_food') }}">
+                    + Add Food
+                </a>
+
+            </div>
+
+
+            <div class="table-wrap">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Food Name
+                            </th>
+
+                            <th>
+                                Quantity
+                            </th>
+
+                            <th>
+                                Expiry
+                            </th>
+
+                            <th>
+                                Pickup Priority
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                AI Food Safety
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+
+                    {% for food in recent_food %}
+
+                        <tr>
+
+
+                            <!-- FOOD NAME -->
+
+                            <td>
+
+                                <strong>
+                                    {{ food.get('food_name', 'Food') }}
+                                </strong>
+
+                            </td>
+
+
+
+                            <!-- QUANTITY -->
+
+                            <td>
+
+                                {{ food.get('quantity', 'N/A') }}
+
+                            </td>
+
+
+
+                            <!-- EXPIRY DATE -->
+
+                            <td>
+
+                                {{ food.get('expiry_date', 'N/A') }}
+
+                            </td>
+
+
+
+                            <!-- =========================
+                                 ML PICKUP PRIORITY
+                                 ========================= -->
+
+                            <td>
+
+                                {% set priority = food.get('urgency', 'Low') %}
+                                {% set priority_class = priority.lower() %}
+
+                                <span class="priority priority-{{ priority_class }}">
+
+                                    ⚡ {{ priority|upper }}
+
+                                </span>
+
+                                <span class="priority-confidence">
+
+                                    ML Confidence:
+                                    {{ food.get('urgency_confidence', 0)|round(2) }}%
+
+                                </span>
+
+                            </td>
+
+
+
+                            <!-- STATUS -->
+
+                            <td>
+
+                                {% set status = food.get('status', 'Available') %}
+
+                                <span class="badge
+
+                                    {% if status == 'Available' %}
+
+                                        completed
+
+                                    {% elif status == 'Reserved' %}
+
+                                        accepted
+
+                                    {% else %}
+
+                                        pending
+
+                                    {% endif %}">
+
+                                    {{ status }}
+
+                                </span>
+
+                            </td>
+
+
+
+                            <!-- =========================
+                                 AI FOOD SAFETY ADVICE
+                                 ========================= -->
+
+                            <td>
+
+                                <form
+                                    action="{{ url_for('food_expiry_advice', food_id=food._id) }}"
+                                    method="POST"
+                                    class="ai-form"
+                                >
+
+                                    <button
+                                        type="submit"
+                                        class="ai-button"
+                                    >
+
+                                        🤖 Get AI Advice
+
+                                    </button>
+
+                                </form>
+
+                            </td>
+
+
+                        </tr>
+
+
+                    {% else %}
+
+                        <tr>
+
+                            <td colspan="6"
+                                style="text-align:center;padding:30px;">
+
+                                No food listings yet.
+                                Start by adding surplus food.
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =========================
+             RECENT NGO REQUESTS
+             ========================= -->
+
+        <div class="section">
+
+            <div class="section-header">
+
+                <h2>
+                    Recent NGO Requests
+                </h2>
+
+                <a href="{{ url_for('incoming_requests') }}">
+                    View All →
+                </a>
+
+            </div>
+
+
+            <div class="table-wrap">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                NGO Name
+                            </th>
+
+                            <th>
+                                Food Requested
+                            </th>
+
+                            <th>
+                                Quantity
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+
+                    {% for req in recent_requests %}
+
+                        <tr>
+
+
+                            <!-- NGO NAME -->
+
+                            <td>
+                                {{ req.get('ngo_name', 'NGO') }}
+                            </td>
+
+
+
+                            <!-- FOOD NAME -->
+
+                            <td>
+                                {{ req.get('food_name', 'Food') }}
+                            </td>
+
+
+
+                            <!-- QUANTITY -->
+
+                            <td>
+                                {{ req.get('quantity', 'N/A') }}
+                            </td>
+
+
+
+                            <!-- REQUEST STATUS -->
+
+                            <td>
+
+                                {% set status = req.get('status', 'Pending') %}
+
+                                <span class="badge
+
+                                    {% if status == 'Accepted' %}
+
+                                        accepted
+
+                                    {% elif status == 'Completed' %}
+
+                                        completed
+
+                                    {% elif status == 'Rejected' %}
+
+                                        rejected
+
+                                    {% else %}
+
+                                        pending
+
+                                    {% endif %}">
+
+                                    {{ status }}
+
+                                </span>
+
+                            </td>
+
+
+                        </tr>
+
+
+                    {% else %}
+
+                        <tr>
+
+                            <td colspan="4"
+                                style="text-align:center;padding:30px;">
+
+                                No NGO requests received yet.
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+    </main>
+
+</div>
+
+</body>
+
+</html>

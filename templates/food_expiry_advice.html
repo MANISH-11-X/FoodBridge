@@ -1,0 +1,103 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Food Safety Advice | FoodBridge</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/donor.css') }}">
+
+    <style>
+        .advice-container {
+            max-width: 850px;
+            margin: 40px auto;
+            padding: 25px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .food-info {
+            background: #f0f8f2;
+            padding: 18px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .ai-result {
+            line-height: 1.8;
+            color: #333;
+        }
+
+        .ai-result h2 {
+            color: #218838;
+            margin-top: 25px;
+        }
+
+        .ai-result h3 {
+            color: #246b3b;
+        }
+
+        .ai-result li {
+            margin-bottom: 10px;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 20px;
+            background: #218838;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+        }
+
+        .safety-note {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            color: #664d03;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="advice-container">
+
+        <h1>🤖 AI Food Safety Assistant</h1>
+
+        <div class="food-info">
+            <h3>Food Details</h3>
+
+            <p><strong>Food Name:</strong> {{ foodname }}</p>
+
+            <p><strong>Category:</strong> {{ category }}</p>
+
+            <p><strong>Expiry Date:</strong> {{ expiry_date }}</p>
+        </div>
+
+        <div class="safety-note">
+            <strong>Food Safety Reminder:</strong>
+            AI-generated advice is general guidance, not a food
+            safety inspection. Do not consume or distribute food
+            that may be unsafe.
+        </div>
+
+        <div class="ai-result">
+            {{ result | safe }}
+        </div>
+
+        <a href="{{ url_for('donor_dashboard') }}"
+           class="back-button">
+            ← Back to Dashboard
+        </a>
+
+    </div>
+
+</body>
+</html>

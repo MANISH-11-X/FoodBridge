@@ -1,0 +1,242 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Requests | FoodBridge</title>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f8fafc;
+        }
+
+        nav {
+            background: #166534;
+            color: white;
+            padding: 18px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        nav h2 { margin: 0; }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 15px;
+        }
+
+        .container { padding: 30px 5%; }
+
+        h1 { color: #166534; }
+
+        .request-card {
+            background: white;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 12px;
+            box-shadow: 0 3px 15px #0000000c;
+        }
+
+        .request-card h2 { color: #166534; }
+
+        .request-card p {
+            color: #475569;
+            line-height: 1.6;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 7px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .Pending { background: #fef3c7; color: #92400e; }
+        .Accepted { background: #dcfce7; color: #166534; }
+        .Rejected { background: #fee2e2; color: #991b1b; }
+        .Completed { background: #dbeafe; color: #1e40af; }
+        .Cancelled { background: #e2e8f0; color: #334155; }
+
+        button {
+            padding: 12px 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            color: white;
+            background: #15803d;
+            margin: 5px 5px 0 0;
+        }
+
+        button:hover { opacity: 0.85; }
+
+        .cancel { background: #dc2626; }
+
+        .empty {
+            background: white;
+            padding: 35px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .message {
+            background: #dcfce7;
+            color: #166534;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 20px;
+            background: #15803d;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+        }
+
+        @media (max-width: 600px) {
+            nav { align-items: flex-start; flex-direction: column; }
+            nav a { margin: 5px 10px 5px 0; }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav>
+    <h2>FoodBridge</h2>
+
+    <div>
+        <a href="{{ url_for('ngo_dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('ngo_food') }}">Available Food</a>
+        <a href="{{ url_for('ngo_my_requests') }}">My Requests</a>
+        <a href="{{ url_for('ngo_logout') }}">Logout</a>
+    </div>
+</nav>
+
+<div class="container">
+
+    <h1>My Food Requests</h1>
+    <p>Track your food requests and pickup status.</p>
+
+    {% with messages = get_flashed_messages() %}
+        {% for message in messages %}
+            <div class="message">{{ message }}</div>
+        {% endfor %}
+    {% endwith %}
+
+    {% if requests %}
+
+        {% for req in requests %}
+
+            <div class="request-card">
+
+                <h2>{{ req.get('food_name', 'Food Item') }}</h2>
+
+                <p>
+                    <strong>Requested Quantity:</strong>
+                    {{ req.get('quantity', 0) }}
+                </p>
+
+                <p>
+                    <strong>Request Date:</strong>
+                    {{ req.get('requested_at', 'Not specified') }}
+                </p>
+
+                <p>
+                    <strong>Message:</strong>
+                    {{ req.get('message', 'No message') }}
+                </p>
+
+                <p>
+                    <strong>Status:</strong>
+
+                    <span class="status {{ req.get('status', 'Pending') }}">
+                        {{ req.get('status', 'Pending') }}
+                    </span>
+                </p>
+
+                {% if req.get('status') == 'Pending' %}
+
+                    <form
+                        action="{{ url_for('ngo_cancel_request', request_id=req._id) }}"
+                        method="POST"
+                        onsubmit="return confirm('Cancel this food request?');"
+                    >
+                        <button type="submit" class="cancel">
+                            Cancel Request
+                        </button>
+                    </form>
+
+                {% elif req.get('status') == 'Accepted' %}
+
+                    <p>
+                        Your request has been accepted by the donor.
+                        Please coordinate the pickup with the donor.
+                    </p>
+
+                    <form
+                        action="{{ url_for('ngo_confirm_pickup', request_id=req._id) }}"
+                        method="POST"
+                        onsubmit="return confirm('Confirm that the food has been picked up?');"
+                    >
+                        <button type="submit">
+                            Confirm Pickup
+                        </button>
+                    </form>
+
+                {% elif req.get('status') == 'Completed' %}
+
+                    <p>
+                        Food pickup has been marked as completed.
+                        Thank you for helping reduce food waste!
+                    </p>
+
+                {% elif req.get('status') == 'Rejected' %}
+
+                    <p>
+                        The donor has rejected this request.
+                        You can browse other available food donations.
+                    </p>
+
+                {% elif req.get('status') == 'Cancelled' %}
+
+                    <p>This request has been cancelled.</p>
+
+                {% endif %}
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="empty">
+            <h2>No Requests Yet</h2>
+
+            <p>
+                You have not requested any food donations yet.
+            </p>
+
+            <a class="btn" href="{{ url_for('ngo_food') }}">
+                Browse Available Food
+            </a>
+        </div>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>

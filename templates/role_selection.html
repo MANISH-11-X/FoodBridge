@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FoodBridge | Home</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f5faf7;
+            color: #1f2937;
+        }
+
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .home-navbar {
+            min-height: 78px;
+            background: rgba(255,255,255,0.97);
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            padding: 0 6%;
+
+            border-bottom: 1px solid #e5e7eb;
+
+            box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+
+        /* LOGO */
+
+        .home-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            text-decoration: none;
+
+            color: #166534;
+
+            font-size: 23px;
+            font-weight: 800;
+        }
+
+
+        .logo-icon {
+            width: 43px;
+            height: 43px;
+
+            background: #dcfce7;
+
+            border-radius: 12px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 23px;
+        }
+
+
+        .home-logo span {
+            color: #22c55e;
+        }
+
+
+        /* NAV LINKS */
+
+        .home-nav-links {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+
+        .home-nav-links a {
+            text-decoration: none;
+
+            padding: 10px 17px;
+
+            border-radius: 9px;
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            transition: 0.25s;
+        }
+
+
+        .nav-login {
+            color: #166534;
+
+            background: white;
+
+            border: 1px solid #22c55e;
+        }
+
+
+        .nav-login:hover {
+            background: #f0fdf4;
+
+            transform: translateY(-1px);
+        }
+
+
+        .nav-register {
+            background: #15803d;
+
+            color: white;
+
+            border: 1px solid #15803d;
+
+            box-shadow: 0 4px 10px rgba(21,128,61,0.15);
+        }
+
+
+        .nav-register:hover {
+            background: #166534;
+
+            transform: translateY(-1px);
+        }
+
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .home-hero {
+            max-width: 1000px;
+
+            margin: auto;
+
+            text-align: center;
+
+            padding: 65px 20px 35px;
+        }
+
+
+        .hero-badge {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            background: #dcfce7;
+
+            color: #166534;
+
+            padding: 8px 15px;
+
+            border-radius: 30px;
+
+            font-size: 11px;
+
+            font-weight: 600;
+
+            margin-bottom: 18px;
+
+            border: 1px solid #bbf7d0;
+        }
+
+
+        .home-hero h1 {
+            font-size: clamp(36px, 5vw, 54px);
+
+            line-height: 1.15;
+
+            color: #14532d;
+
+            margin-bottom: 18px;
+
+            font-weight: 800;
+
+            letter-spacing: -1.5px;
+        }
+
+
+        .home-hero h1 span {
+            color: #16a34a;
+        }
+
+
+        .home-hero p {
+            max-width: 680px;
+
+            margin: auto;
+
+            font-size: 14px;
+
+            line-height: 1.8;
+
+            color: #64748b;
+        }
+
+
+        /* =========================
+           ROLE CARDS
+        ========================= */
+
+        .role-container {
+            max-width: 1050px;
+
+            margin: 15px auto 55px;
+
+            padding: 0 25px;
+
+            display: grid;
+
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 25px;
+        }
+
+
+        .role-card {
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 20px;
+
+            text-align: left;
+
+            border: 1px solid #e5e7eb;
+
+            box-shadow: 0 8px 25px rgba(15,23,42,0.05);
+
+            position: relative;
+
+            overflow: hidden;
+
+            transition: 0.25s;
+        }
+
+
+        .role-card::before {
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 4px;
+
+            background: #22c55e;
+        }
+
+
+        .role-card:hover {
+            transform: translateY(-5px);
+
+            box-shadow: 0 15px 35px rgba(15,23,42,0.09);
+        }
+
+
+        .role-icon {
+            width: 58px;
+            height: 58px;
+
+            background: #f0fdf4;
+
+            border-radius: 15px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            font-size: 28px;
+
+            margin-bottom: 18px;
+        }
+
+
+        .role-card h2 {
+            color: #166534;
+
+            font-size: 21px;
+
+            margin-bottom: 10px;
+        }
+
+
+        .role-card p {
+            color: #64748b;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+
+            min-height: 65px;
+
+            margin-bottom: 20px;
+        }
+
+
+        .role-buttons {
+            display: flex;
+
+            gap: 10px;
+        }
+
+
+        .role-buttons a {
+            padding: 10px 18px;
+
+            border-radius: 9px;
+
+            text-decoration: none;
+
+            font-weight: 600;
+
+            font-size: 12px;
+
+            transition: 0.2s;
+        }
+
+
+        .role-login {
+            color: #166534;
+
+            background: white;
+
+            border: 1px solid #22c55e;
+        }
+
+
+        .role-login:hover {
+            background: #f0fdf4;
+        }
+
+
+        .role-register {
+            background: #15803d;
+
+            color: white;
+
+            border: 1px solid #15803d;
+        }
+
+
+        .role-register:hover {
+            background: #166534;
+
+            transform: translateY(-1px);
+        }
+
+
+        /* =========================
+           HOW IT WORKS
+        ========================= */
+
+        .how-section {
+            background: white;
+
+            border-top: 1px solid #e5e7eb;
+
+            border-bottom: 1px solid #e5e7eb;
+
+            padding: 50px 5%;
+        }
+
+
+        .section-title {
+            text-align: center;
+
+            margin-bottom: 30px;
+        }
+
+
+        .section-title h2 {
+            color: #14532d;
+
+            font-size: 25px;
+
+            margin-bottom: 7px;
+        }
+
+
+        .section-title p {
+            color: #64748b;
+
+            font-size: 12px;
+        }
+
+
+        .steps {
+            max-width: 950px;
+
+            margin: auto;
+
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 25px;
+        }
+
+
+        .step {
+            text-align: center;
+
+            padding: 15px;
+        }
+
+
+        .step-number {
+            width: 45px;
+            height: 45px;
+
+            margin: auto auto 13px;
+
+            border-radius: 50%;
+
+            background: #dcfce7;
+
+            color: #15803d;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            font-weight: 700;
+
+            font-size: 13px;
+        }
+
+
+        .step h3 {
+            font-size: 14px;
+
+            color: #334155;
+
+            margin-bottom: 7px;
+        }
+
+
+        .step p {
+            font-size: 11px;
+
+            line-height: 1.6;
+
+            color: #64748b;
+        }
+
+
+        /* =========================
+           IMPACT SECTION
+        ========================= */
+
+        .impact-section {
+            max-width: 1050px;
+
+            margin: 45px auto;
+
+            padding: 0 25px;
+        }
+
+
+        .impact-box {
+            background: linear-gradient(
+                135deg,
+                #166534,
+                #15803d
+            );
+
+            border-radius: 20px;
+
+            padding: 30px;
+
+            color: white;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 30px;
+        }
+
+
+        .impact-text h2 {
+            font-size: 21px;
+
+            margin-bottom: 8px;
+        }
+
+
+        .impact-text p {
+            max-width: 650px;
+
+            color: #dcfce7;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+
+        .impact-icon {
+            width: 85px;
+            height: 85px;
+
+            background: rgba(255,255,255,0.12);
+
+            border-radius: 20px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            font-size: 45px;
+
+            flex-shrink: 0;
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        .home-footer {
+            text-align: center;
+
+            padding: 22px;
+
+            background: white;
+
+            border-top: 1px solid #e5e7eb;
+
+            color: #94a3b8;
+
+            font-size: 11px;
+        }
+
+
+        .home-footer strong {
+            color: #166534;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 800px) {
+
+            .home-navbar {
+                padding: 13px 5%;
+
+                gap: 12px;
+
+                flex-wrap: wrap;
+            }
+
+
+            .home-nav-links {
+                width: 100%;
+
+                justify-content: center;
+
+                flex-wrap: wrap;
+            }
+
+
+            .role-container {
+                grid-template-columns: 1fr;
+            }
+
+
+            .steps {
+                grid-template-columns: 1fr;
+            }
+
+
+            .impact-box {
+                flex-direction: column;
+
+                text-align: center;
+            }
+
+        }
+
+
+        @media (max-width: 500px) {
+
+            .home-logo {
+                font-size: 20px;
+            }
+
+
+            .home-nav-links a {
+                padding: 8px 11px;
+
+                font-size: 10px;
+            }
+
+
+            .home-hero {
+                padding-top: 45px;
+            }
+
+
+            .home-hero h1 {
+                font-size: 33px;
+            }
+
+
+            .home-hero p {
+                font-size: 13px;
+            }
+
+
+            .role-card {
+                padding: 25px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     NAVBAR
+========================= -->
+
+<nav class="home-navbar">
+
+
+    <a href="{{ url_for('home') }}" class="home-logo">
+
+        <div class="logo-icon">
+            🌱
+        </div>
+
+        Food<span>Bridge</span>
+
+    </a>
+
+
+    <div class="home-nav-links">
+
+
+        <a
+            href="{{ url_for('donorloginroute') }}"
+            class="nav-login"
+        >
+            Donor Login
+        </a>
+
+
+        <a
+            href="{{ url_for('donarregistration') }}"
+            class="nav-register"
+        >
+            Donor Register
+        </a>
+
+
+        <a
+            href="{{ url_for('ngo_login') }}"
+            class="nav-login"
+        >
+            NGO Login
+        </a>
+
+
+        <a
+            href="{{ url_for('ngo_register') }}"
+            class="nav-register"
+        >
+            NGO Register
+        </a>
+
+
+    </div>
+
+</nav>
+
+
+
+<!-- =========================
+     HERO
+========================= -->
+
+<section class="home-hero">
+
+
+    <div class="hero-badge">
+
+        🌱 Smart Food Redistribution Platform
+
+    </div>
+
+
+    <h1>
+
+        Together, Let's
+
+        <span>
+            Reduce Food Waste
+        </span>
+
+    </h1>
+
+
+    <p>
+
+        FoodBridge connects food donors with NGOs to help
+        redistribute surplus food to people in need.
+        Turn excess food into meaningful impact for your community.
+
+    </p>
+
+
+</section>
+
+
+
+<!-- =========================
+     DONOR + NGO CARDS
+========================= -->
+
+<section class="role-container">
+
+
+    <!-- DONOR -->
+
+    <div class="role-card">
+
+
+        <div class="role-icon">
+            🤝
+        </div>
+
+
+        <h2>
+            Food Donor
+        </h2>
+
+
+        <p>
+
+            Have surplus food?
+
+            Register as a donor to list available food,
+            manage donations and connect with NGOs.
+
+        </p>
+
+
+        <div class="role-buttons">
+
+
+            <a
+                href="{{ url_for('donorloginroute') }}"
+                class="role-login"
+            >
+                Login
+            </a>
+
+
+            <a
+                href="{{ url_for('donarregistration') }}"
+                class="role-register"
+            >
+                Register
+            </a>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- NGO -->
+
+    <div class="role-card">
+
+
+        <div class="role-icon">
+            🏢
+        </div>
+
+
+        <h2>
+            NGO / Organization
+        </h2>
+
+
+        <p>
+
+            Find available food donations,
+            submit pickup requests and help distribute
+            surplus food to communities in need.
+
+        </p>
+
+
+        <div class="role-buttons">
+
+
+            <a
+                href="{{ url_for('ngo_login') }}"
+                class="role-login"
+            >
+                Login
+            </a>
+
+
+            <a
+                href="{{ url_for('ngo_register') }}"
+                class="role-register"
+            >
+                Register
+            </a>
+
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =========================
+     HOW IT WORKS
+========================= -->
+
+<section class="how-section">
+
+
+    <div class="section-title">
+
+        <h2>
+            How FoodBridge Works
+        </h2>
+
+        <p>
+            A simple way to connect surplus food with organizations that need it.
+        </p>
+
+    </div>
+
+
+    <div class="steps">
+
+
+        <div class="step">
+
+            <div class="step-number">
+                01
+            </div>
+
+            <h3>
+                Donors List Food
+            </h3>
+
+            <p>
+                Donors add surplus food with
+                quantity and expiry information.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">
+                02
+            </div>
+
+            <h3>
+                NGOs Find Food
+            </h3>
+
+            <p>
+                NGOs browse available donations
+                and submit pickup requests.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">
+                03
+            </div>
+
+            <h3>
+                Food Reaches People
+            </h3>
+
+            <p>
+                Accepted requests are completed
+                through the pickup process.
+            </p>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     IMPACT
+========================= -->
+
+<section class="impact-section">
+
+
+    <div class="impact-box">
+
+
+        <div class="impact-text">
+
+            <h2>
+                🍱 Every Donation Can Make a Difference
+            </h2>
+
+            <p>
+
+                FoodBridge creates a connection between
+                surplus food and organizations working to
+                support communities in need — helping reduce
+                unnecessary food waste.
+
+            </p>
+
+        </div>
+
+
+        <div class="impact-icon">
+            🌱
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer class="home-footer">
+
+    © 2026
+
+    <strong>
+        FoodBridge
+    </strong>
+
+    | Connecting Food with Those in Need
+
+</footer>
+
+
+</body>
+
+</html>
